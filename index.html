@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Salary Bonus Calculator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --success: #10b981;
+      --danger: #ef4444;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+    }
+
+    * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      margin: 0;
+      padding: 20px;
+      line-height: 1.5;
+    }
+
+    .wrapper { max-width: 1100px; margin: 0 auto; }
+
+    header { text-align: center; margin-bottom: 40px; }
+
+    h2 { font-weight: 700; font-size: 2rem; margin-bottom: 8px; color: var(--primary); }
+
+    p.subtitle { color: var(--text-muted); margin: 0; }
+
+    /* Input Section */
+    .input-section {
+      background: var(--card-bg);
+      max-width: 500px;
+      margin: 0 auto 40px;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      border: 1px solid var(--border);
+    }
+
+    .input-group { margin-bottom: 20px; }
+
+    .input-section label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .input-section input {
+      width: 100%;
+      padding: 14px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 2px solid var(--border);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .input-section input:focus { border-color: var(--primary); }
+
+    /* Buttons */
+    .btn-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-calculate {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-calculate:hover { background: var(--primary-hover); }
+
+    .btn-reset {
+      background: transparent;
+      color: var(--text-muted);
+      border: 2px solid var(--border);
+    }
+
+    .btn-reset:hover {
+      background: #f1f5f9;
+      color: var(--danger);
+      border-color: var(--danger);
+    }
+	
+	/* Disclaimer Styling */
+    .disclaimer {
+      text-align: center;
+      max-width: 500px;
+      margin: 0 auto 40px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .disclaimer svg {
+      width: 12px;
+      height: 12px;
+      fill: var(--text-muted);
+    }
+
+    /* Results Grid */
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+    }
+
+    .box {
+      background: var(--card-bg);
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--border);
+    }
+
+    .box h3 {
+      font-size: 1.1rem;
+      margin: 0 0 20px 0;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--bg);
+      color: var(--primary);
+      text-align: center;
+    }
+
+    .field-group { display: flex; flex-direction: column; gap: 12px; }
+
+    .result-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .result-row input {
+      width: 60%;
+      border: none;
+      background: var(--bg);
+      padding: 8px 12px;
+      border-radius: 6px;
+      text-align: right;
+      font-family: monospace;
+      font-size: 1rem;
+      color: var(--text-main);
+      font-weight: 700;
+    }
+
+    /* Summary highlight for total received */
+    .result-row.total-row {
+      margin-top: 10px;
+      padding-top: 15px;
+      border-top: 1px dashed var(--border);
+    }
+
+    .result-row.total-row input {
+      background: #ecfdf5;
+      color: var(--success);
+    }
+/* Contact Footer CSS */
+    footer {
+      padding: 30px 20px;
+      text-align: center;
+      background: #f1f5f9;
+      margin: 40px -20px -20px -20px; /* Bleed to edges */
+      border-top: 1px solid var(--border);
+    }
+
+    .contact-card {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 20px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      text-decoration: none;
+      color: var(--text-main);
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .contact-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--primary);
+      color: var(--primary);
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.15);
+    }
+
+    .contact-card svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+    @media (max-width: 480px) {
+      h2 { font-size: 1.5rem; }
+      .result-row input { width: 50%; }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="wrapper">
+  <header>
+    <h2>Salary Breakdown</h2>
+    <p class="subtitle">Enter your monthly received salary to see bonuses, basic salary, gross salary and current PF</p>
+  </header>
+  <div class="input-section">
+    <div class="input-group">
+      <label for="net">Received Monthly Salary (Excluding Bonus)</label>
+      <input type="number" id="net" placeholder="Enter amount (e.g. 50000)">
+    </div>
+    
+    <div class="btn-container">
+      <button class="btn btn-calculate" onclick="calculate()">Calculate</button>
+      <button class="btn btn-reset" onclick="resetForm()">Reset All</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="box">
+      <h3>Standard Month</h3>
+      <div class="field-group">
+        <div class="result-row">Gross <input id="gross1" readonly></div>
+        <div class="result-row">Basic <input id="basic1" readonly></div>
+        <div class="result-row">PF (5%) <input id="pf1" readonly></div>
+        <div class="result-row total-row">Net Salary <input id="net1" readonly></div>
+      </div>
+    </div>
+
+    <div class="box">
+      <h3>Eid Bonus</h3>
+      <div class="field-group">
+        <div class="result-row">Gross <input id="gross2" readonly></div>
+        <div class="result-row">Basic <input id="basic2" readonly></div>
+        <div class="result-row">PF (5%) <input id="pf2" readonly></div>
+        <div class="result-row">Bonus (100%) <input id="bonus2" readonly></div>
+        <div class="result-row total-row">Total Received <input id="total2" readonly></div>
+      </div>
+    </div>
+
+    <div class="box">
+      <h3>Noboborsho Bonus</h3>
+      <div class="field-group">
+        <div class="result-row">Gross <input id="gross3" readonly></div>
+        <div class="result-row">Basic <input id="basic3" readonly></div>
+        <div class="result-row">PF (5%) <input id="pf3" readonly></div>
+        <div class="result-row">Bonus (20%) <input id="bonus3" readonly></div>
+        <div class="result-row total-row">Total Received <input id="total3" readonly></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function calculate(){
+  let net = Number(document.getElementById("net").value);
+  if(net <= 0 || isNaN(net)) {
+    alert("Please enter a valid salary!");
+    return;
+  }
+
+  // Reverse calculate Gross
+  let gross = net / 0.97;
+  let basic = gross * 0.60;
+  let pf = basic * 0.05;
+  let netSalary = gross - pf;
+
+  // Bonuses
+  let eidBonus = basic * 1.00;        // 100% Basic
+  let noboborshoBonus = basic * 0.20; // 20% Basic
+
+  // No Bonus
+  document.getElementById("gross1").value = gross.toFixed(2);
+  document.getElementById("basic1").value = basic.toFixed(2);
+  document.getElementById("pf1").value = pf.toFixed(2);
+  document.getElementById("net1").value = netSalary.toFixed(2);
+
+  // Eid Bonus
+  document.getElementById("gross2").value = gross.toFixed(2);
+  document.getElementById("basic2").value = basic.toFixed(2);
+  document.getElementById("pf2").value = pf.toFixed(2);
+  document.getElementById("bonus2").value = eidBonus.toFixed(2);
+  document.getElementById("total2").value = (netSalary + eidBonus).toFixed(2);
+
+  // Noboborsho Bonus
+  document.getElementById("gross3").value = gross.toFixed(2);
+  document.getElementById("basic3").value = basic.toFixed(2);
+  document.getElementById("pf3").value = pf.toFixed(2);
+  document.getElementById("bonus3").value = noboborshoBonus.toFixed(2);
+  document.getElementById("total3").value = (netSalary + noboborshoBonus).toFixed(2);
+}
+
+function resetForm() {
+  const inputs = document.querySelectorAll('input');
+  inputs.forEach(input => input.value = '');
+}
+</script>
+<div class="disclaimer">
+    <svg viewBox="0 0 24 24"><path d="M12 2C9.243 2 7 4.243 7 7V10H6C4.897 10 4 10.897 4 12V20C4 21.103 4.897 22 6 22H18C19.103 22 20 21.103 20 20V12C20 10.897 19.103 10 18 10H17V7C17 4.243 14.757 2 12 2ZM9 7C9 5.346 10.346 4 12 4C13.654 4 15 5.346 15 7V10H9V7ZM6 12H18V20H6V12Z"/></svg>
+    Privacy Note: Calculations are performed locally. We do not keep records or store your data.
+  </div>
+<footer>
+  <a href="mailto:mamun.hawarit@gmail.com" class="contact-card">
+    <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+    For any queries, contact me
+  </a>
+</footer>
+</body>
+</html>
