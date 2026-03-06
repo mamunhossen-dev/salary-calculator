@@ -43,19 +43,20 @@
     p.subtitle { color: var(--text-muted); margin: 0; }
 
     /* Input Section */
-	.m-footer{
+	  .m-heading{
 	  text-align: center;
-	  padding: 20px;
-	  background: #0f172a;
-	  color: #d1d5db;
-	  font-size: 14px;
+	  font-size: 36px;
+	  font-weight: 700;
 	  margin-top: 40px;
+	  margin-bottom: 10px;
+	  color: #4f46e5;
 	}
-
-	.m-footer .author{
-	  font-weight: 600;
-	  color: #22c55e;
-	  letter-spacing: 0.5px;
+	
+	.m-subheading{
+	  text-align: center;
+	  font-size: 15px;
+	  color: #6b7280;
+	  margin-bottom: 30px;
 	}
     .input-section {
       background: var(--card-bg);
@@ -245,16 +246,30 @@
       h2 { font-size: 1.5rem; }
       .result-row input { width: 50%; }
     }
+	  	.m-footer{
+	  text-align: center;
+	  padding: 20px;
+	  background: #0f172a;
+	  color: #d1d5db;
+	  font-size: 14px;
+	  margin-top: 40px;
+	}
+
+	.m-footer .author{
+	  font-weight: 600;
+	  color: #22c55e;
+	  letter-spacing: 0.5px;
+	}
   </style>
 </head>
 
 <body>
 
 <div class="wrapper">
-  <header>
-    <h2>HawarIT Salary Calculator</h2>
-    <p class="subtitle">Enter your monthly received salary to see bonuses, basic salary, gross salary and current PF</p>
-  </header>
+ <h1 class="m-heading">HawarIT Salary Calculator</h1>
+<p class="m-subheading">
+Enter your monthly received salary to see bonuses, basic salary, gross salary and current PF
+</p>
   <div class="input-section">
     <div class="input-group">
       <label for="net">Received Monthly Salary (Excluding Bonus)</label>
@@ -360,6 +375,7 @@ function resetForm() {
 </body>
 
 </html>
+
 
 
 
