@@ -1,4 +1,4 @@
-# Salary Calculator
+# HawarIT Limited Salary Calculator
 
 A simple web-based Salary Calculator that helps users calculate their salary based on input values.
 
