@@ -303,67 +303,47 @@ Enter your monthly received salary to see bonuses, basic salary, gross salary an
 </div>
 
 <script>
-function calc(){
-    // Input values
-    let L = parseFloat(document.getElementById("L").value);       // Wall length (ft)
-    let H = parseFloat(document.getElementById("H").value);       // Wall height (ft)
-    let T = parseFloat(document.getElementById("T").value)/12;    // Wall thickness in ft
-    let openArea = parseFloat(document.getElementById("openArea").value); // Door/Window area
-    let pOut = parseFloat(document.getElementById("pOut").value)/12; // Outside plaster (ft)
-    let pIn = parseFloat(document.getElementById("pIn").value)/12;   // Inside plaster (ft)
-    let rC = parseFloat(document.getElementById("rC").value);     // Cement ratio
-    let rS = parseFloat(document.getElementById("rS").value);     // Sand ratio
+function calculate(){
+  let net = Number(document.getElementById("net").value);
+  if(net <= 0 || isNaN(net)) {
+    alert("Please enter a valid salary!");
+    return;
+  }
 
-    // 1️⃣ Net wall area
-    let netArea = (L * H) - openArea; // sft
+  // Reverse calculate Gross
+  let gross = net / 0.97;
+  let basic = gross * 0.60;
+  let pf = basic * 0.05;
+  let netSalary = gross - pf;
 
-    // 2️⃣ Wall volume in cubic feet
-    let brickVol = netArea * T; // cft
+  // Bonuses
+  let eidBonus = basic * 1.00;        // 100% Basic
+  let noboborshoBonus = basic * 0.20; // 20% Basic
 
-    // 3️⃣ Single brick volume in cft (10"x5"x3")
-    let singleBrickCFT = (10 * 5 * 3) / 1728; // cft
+  // No Bonus
+  document.getElementById("gross1").value = gross.toFixed(2);
+  document.getElementById("basic1").value = basic.toFixed(2);
+  document.getElementById("pf1").value = pf.toFixed(2);
+  document.getElementById("net1").value = netSalary.toFixed(2);
 
-    // 4️⃣ Total bricks required
-    let bricks = Math.ceil(brickVol / singleBrickCFT);
+  // Eid Bonus
+  document.getElementById("gross2").value = gross.toFixed(2);
+  document.getElementById("basic2").value = basic.toFixed(2);
+  document.getElementById("pf2").value = pf.toFixed(2);
+  document.getElementById("bonus2").value = eidBonus.toFixed(2);
+  document.getElementById("total2").value = (netSalary + eidBonus).toFixed(2);
 
-    // 5️⃣ Mortar for brickwork (30% of brick volume + 33% wastage)
-    let brickDry = brickVol * 0.30 * 1.33;
+  // Noboborsho Bonus
+  document.getElementById("gross3").value = gross.toFixed(2);
+  document.getElementById("basic3").value = basic.toFixed(2);
+  document.getElementById("pf3").value = pf.toFixed(2);
+  document.getElementById("bonus3").value = noboborshoBonus.toFixed(2);
+  document.getElementById("total3").value = (netSalary + noboborshoBonus).toFixed(2);
+}
 
-    // 6️⃣ Plaster volume (inside + outside)
-    let plasterVol = netArea * (pOut + pIn);
-    let plasterDry = plasterVol * 1.33; // include wastage
-
-    let ratioSum = rC + rS;
-
-    // 7️⃣ Cement and sand for brickwork
-    let bCement = (brickDry * rC) / ratioSum; // cft
-    let bSand = (brickDry * rS) / ratioSum;   // cft
-
-    // 8️⃣ Cement and sand for plaster
-    let pCement = (plasterDry * rC) / ratioSum; // cft
-    let pSand = (plasterDry * rS) / ratioSum;   // cft
-
-    // 9️⃣ Convert cement from cft to bags (1 bag = 1.25 cft)
-    let bCementBag = bCement / 1.25;
-    let pCementBag = pCement / 1.25;
-
-    // 10️⃣ Total materials
-    let totalCement = bCementBag + pCementBag;
-    let totalSand = bSand + pSand;
-
-    // 11️⃣ Display results
-    document.getElementById("area").innerText = netArea.toFixed(2);
-    document.getElementById("vol").innerText = brickVol.toFixed(2);
-    document.getElementById("bricks").innerText = bricks.toLocaleString();
-    document.getElementById("bCement").innerText = bCementBag.toFixed(2);
-    document.getElementById("bSand").innerText = bSand.toFixed(2);
-    document.getElementById("pCement").innerText = pCementBag.toFixed(2);
-    document.getElementById("pSand").innerText = pSand.toFixed(2);
-    document.getElementById("tCement").innerText = totalCement.toFixed(2);
-    document.getElementById("tSand").innerText = totalSand.toFixed(2);
-
-    // Show the result section
-    document.getElementById("output").style.display = "block";
+function resetForm() {
+  const inputs = document.querySelectorAll('input');
+  inputs.forEach(input => input.value = '');
 }
 </script>
 <div class="disclaimer">
